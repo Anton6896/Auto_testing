@@ -1,3 +1,8 @@
+# utills files
+.idea
+venv_my_tes
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
