@@ -9,15 +9,18 @@ from my_tes.case_1.services import card_service
 
 driver_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'chromedriver')
 
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-def test_ice_spirit_is_displayed():
-    driver = webdriver.Chrome(driver_path)
-    driver.get('https://statsroyale.com/')
-    cards_page = CardsPage(driver)
-    cards_page.goto_all()  # to page with all cards
-    ice_spirit = cards_page.get_card_by_name("Ice Spirit")  # look for card
-    assert ice_spirit.is_displayed()
-    driver.close()
+# def test_ice_spirit_is_displayed():
+#     driver = webdriver.Chrome(driver_path)
+#     driver.get('https://statsroyale.com/')
+#     cards_page = CardsPage(driver)
+#     cards_page.goto_all()  # to page with all cards
+#     ice_spirit = cards_page.get_card_by_name("Ice Spirit")  # look for card
+#     assert ice_spirit.is_displayed()
+#     driver.close()
 
 
 # def test_three_musketeers_detail():
