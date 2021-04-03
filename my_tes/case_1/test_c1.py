@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 
 import pytest
 from selenium import webdriver
@@ -7,11 +7,8 @@ from my_tes.case_1.pages.card_detail import CardDetail
 from my_tes.case_1.pages.cards_page import CardsPage
 from my_tes.case_1.services import card_service
 
-driver_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'chromedriver')
-
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+BASE_DIR = Path(__file__).resolve().parent.parent
+CHROMEDRIVER = BASE_DIR.joinpath('chromedriver')
 
 # def test_ice_spirit_is_displayed():
 #     driver = webdriver.Chrome(driver_path)
@@ -58,20 +55,44 @@ from selenium.webdriver.support import expected_conditions as EC
 
 """
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-by using an api look for all cards and test them 
+by using an api look for all cards and test them ( this 2 tests is testing 200 tests !!! )
 """
-# cards_list = card_service.get_all_cards()
-#
-#
-# @pytest.mark.parametrize('card', cards_list)
-# def test_see_all_cards(card):
-#     """
-#     will go thru all cards by name and check if they is displayed
-#     """
-#     driver = webdriver.Chrome(driver_path)
-#     driver.get('https://statsroyale.com/')
-#     cards_page = CardsPage(driver).goto_all()
-#     cards_on_page = cards_page.get_card_by_name(card.name)
-#     assert cards_on_page.is_displayed()
-#
-#     driver.close()
+cards_list = card_service.get_all_cards()  # api call (create a Cart's list)
+
+
+@pytest.mark.parametrize('card', cards_list)
+def test_all_cards_on_page(card):
+    """
+    will go thru all cards by name and check if they is displayed
+    """
+    driver = webdriver.Chrome(CHROMEDRIVER)
+    try:
+        driver.get('https://statsroyale.com/')
+        cards_page = CardsPage(driver).goto_all()
+        cards_on_page = cards_page.get_card_by_name(card.name)
+        assert cards_on_page.is_displayed()
+
+    except:
+        print('Something went wrong')
+
+    finally:
+        driver.close()
+
+
+@pytest.mark.parametrize('card_api', cards_list)
+def test_card_detail_check(card_api):
+    driver = webdriver.Chrome(CHROMEDRIVER)
+    try:
+        driver.get('https://statsroyale.com/')
+        CardsPage(driver).goto_all().get_card_by_name(card_api.name).click()
+        card_obj = CardDetail(driver).get_base_card()
+
+        assert card_obj.name == card_api.name
+        assert card_obj.type == card_api.type
+        assert card_obj.arena == card_api.arena
+        assert card_obj.rarity == card_api.rarity
+
+    except:
+        print("Some error ")
+    finally:
+        driver.close()
