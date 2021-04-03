@@ -6,6 +6,8 @@ classes points
 2. goto links
 """
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class HeaderNavMap:
@@ -18,6 +20,9 @@ class HeaderNavMap:
 
     @property
     def cards_link(self):
+        # return WebDriverWait(self._driver, 5).until(
+        #     EC.presence_of_element_located((By.CSS_SELECTOR, "[href='/cards']"))
+        # )
         return self._driver.find_element(By.CSS_SELECTOR, "[href='/cards']")
 
     @property

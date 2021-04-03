@@ -2,8 +2,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from typing import Tuple
 
+from selenium.webdriver.support.wait import WebDriverWait
+
 from my_tes.case_1.models.card import Card
 from my_tes.case_1.pages.common.base import PageBase
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class CardDetailMap:
@@ -16,8 +19,6 @@ class CardDetailMap:
 
     @property
     def card_type(self) -> WebElement:
-        # https://www.youtube.com/watch?v=UJ2B49YbW04&list=PLelD030IW7swU6n75wOIeCC9hqKipub_w&index=3&ab_channel=QAatthePoint
-        # 25.50
         return self._driver.find_element(By.CSS_SELECTOR, "[class*='card__rarity']")
 
     @property
