@@ -81,6 +81,9 @@ def test_all_cards_on_page(card):
 
 @pytest.mark.parametrize('card_api', cards_list)
 def test_card_detail_check(card_api):
+    """
+    goto web an compare the cart data with the data that got fom the API
+    """
     driver = webdriver.Chrome(CHROMEDRIVER)
     try:
         driver.get('https://statsroyale.com/')
